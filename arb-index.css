@@ -1,0 +1,590 @@
+@charset "UTF-8";
+
+
+/* GENERIC SETTINGS */
+* {
+    box-sizing: border-box;
+}
+
+/* Style the body control */
+body {
+    margin: 0;
+    background-color: #fafafa;
+    font-family: Calibri;
+}
+
+/* Setting to hide controls */
+.hidden {
+    display: none;
+}
+
+/* Setting to make controls transparent */
+.transparent {
+    opacity: 0;
+}
+
+
+
+/* PAGE HEADER SETTINGS */
+
+/* Style the header */
+.header {
+    background-color: #fafafa;
+    padding: 5px;
+    text-align: center;
+    font-family: Calibri;
+}
+
+/* Style the header text */
+.headerText {
+    font-size: x-large;
+    font-weight: bold;
+    color: #1b6698;
+}
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #fafafa;
+}
+
+/* Style the topnav links */
+.topnav a {
+    float: left;
+    display: block;
+    color: #1b6698;
+    text-align: center;
+    padding: 5px 16px;
+    text-decoration: none;
+    margin: 0.2px;
+    border-left: 1px solid #bedef4;
+    border-right: 1px solid #bedef4;
+    border-top: 1px solid #bedef4;
+}
+
+/* Style the active topnav links */
+.topnav a.active {
+    background-color: #3498db;
+    color: #f2f2f2;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+    background-color: #1f74ad;
+    color: #f2f2f2;
+}
+
+
+
+/* PAGE MAIN CONTROL SETTINGS */
+
+/* Page sttings a single row */
+.row {
+    background-color: #fafafa;
+    height: calc(100vh - 120px);
+    border-top: 1px solid #bedef4;
+}
+
+/* Create three unequal columns that floats next to each other */
+.column {
+    float: left;
+    display: flex;
+    flex-direction: column; 
+}
+
+/* Left column */
+.column.left {
+    width: 45%;
+    height: 100%;
+}
+
+/* Middle column */
+.column.middle {
+    width: 10%;
+    height: 100%;
+}
+
+/* Right column */
+.column.right {
+    width: 45%;
+    height: 100%;
+}
+
+
+
+/* FOOTER SETTINGS */
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
+    background-color: #fafafa;
+    justify-content: left;
+    margin: 5px;
+}
+
+.footerText {
+    font-family: monospace;
+    font-size: medium;
+	color: #264bb9;
+    background-color: #fafafa;
+    text-align: left;
+}
+
+
+
+/* TEXT AREA AND LABEL CONTROLS SETTINGS */
+
+/* TextArea Control for both text and code */
+.textarea {
+    resize: none;
+    overflow: auto;
+    font-family: monospace;
+    font-size: medium;
+    border: 1px solid #bedef4;
+    height: 100%;
+    margin: 5px;
+    padding: 5px;
+    background-color: #eaeafb;
+}
+
+/* Label Control for text, code and json controls */
+.textarea-label {
+    font-size: medium;
+    font-weight: bold;
+    color: #1b6698;
+}
+
+/* Generic Flex Container with centered contents */
+.flexCenteredContainer {
+    display: flex; /* Enable flexbox */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Container to be placed horizontally on top */
+.onTopHorizontalContainer {
+    display: flex; /* Enable flexbox */
+    align-items: center; /* Vertically align items in the middle */
+    justify-content: space-between; /* Align items to the start and end of the container */
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+
+/* CODEMIRROR SETTINGS */
+/* CodeMirror Control for code */
+.CodeMirror {
+    resize: none;
+    font-family: monospace;
+    font-size: medium;
+    border: 1px solid #bedef4;
+    height: 100%;
+    margin: 5px;
+    padding: 5px;
+    background-color: #eaeafb;
+
+}
+
+/* Prudens Colouring Settings */
+.cm-s-default .cm-keyword {
+    color: blue !important;
+    font-weight: bold !important;
+}
+.cm-variable { color: green; }
+.cm-rname {
+    color: green;
+    font-weight: bold;
+}
+.cm-predicate {
+    color: purple;
+    font-weight: bold;
+}
+.cm-function {
+    color: rgb(186, 123, 7);
+    font-weight: bold;
+}
+.cm-operator {
+    color: blue;
+    font-weight: bold;
+}
+.cm-literal {
+    color: red;
+}
+.cm-strong {
+    font-weight: bold;
+}
+
+
+
+/* BUTTONS AND CONTROLS SETTINGS */
+
+/* Action Buttons Set - Span horizontally*/
+.actionButtonsHorizontallyEnd {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Action Buttons Set - Span centered horizontally*/
+.actionButtonsHorizontallyCenter {
+    display: flex;
+    justify-content: center;
+}
+
+/* Action Buttons Set - Span vertically*/
+.actionButtonsVertically {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center;
+    align-items: center; /* Align items to the center */
+    height: 100%; /* Ensure the container takes full height of its parent */
+}
+
+/* close, checkmark & popupActionIcon Buttons settings */
+.close, .checkmark, .actionIcon, .actionCommandIcon {
+    color: #aaaaaa;
+    margin: 5px;
+    padding: 5px;
+}
+
+.close:hover, .close:focus {
+    color: red;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.checkmark:hover, .checkmark:focus {
+    color: green;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.actionIcon:hover, .actionIcon:focus, .actionCommandIcon:hover, .actionCommandIcon:focus {
+    color: #1f74ad;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+/* Button settings */
+.nestorButton {
+    margin: 5px;
+    background-color: #2283c3;
+    padding: 5px;
+    color: #f3f3f3;
+    font-size: medium;
+    transition-duration: 200ms;
+    text-align: center;
+    /* border-radius: 5px; */
+}
+
+/* Popup Button settings */
+.nestorButton.popup {
+    min-width: 60px;
+}
+
+/* Button hover settings */
+.nestorButton:hover {
+    background-color: #1f74ad;
+}
+
+/* Button filler area control settings */
+.nestorButtonFiller {
+    color: #1b6698;
+    padding-bottom: 5px;
+    font-size: medium;
+    text-align: center;
+    font-weight: bold;
+}
+
+
+
+/* TOOLTIP SETTINGS */
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 100px;
+    background-color: black;
+    color: #fff;
+    font-family: Calibri;
+    font-size: 14px;
+    text-align: center;
+    padding: 5px 2px;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 9999;
+    top: 110%;
+    left: 50%;
+    margin-left: -50px; /* Use half of the width (100/2 = 50), to center the tooltip */
+}
+
+/* Not required now because JS is used for displaying the tooltip to support timeout
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+*/
+
+.tooltip .tooltiptext::after {
+    content: " ";
+    position: absolute;
+    bottom: 100%;  /* At the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
+}
+
+
+
+/* PAGE LOADER ANIMATED CONTROL SETTINGS */
+
+/* Center the loader */
+#loader {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    z-index: 1001;
+    width: 120px;
+    height: 120px;
+    margin: -76px 0 0 -76px;
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+    from { bottom:-100px; opacity:0 } 
+    to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+    from{ bottom:-100px; opacity:0 } 
+    to{ bottom:0; opacity:1 }
+}
+
+#nestorPageContent {
+    display: none;
+}
+
+
+
+/* PAGE LOAD OVERLAY SETTINGS */
+
+#nestorOverlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    cursor: pointer;
+}
+
+#textOverlay{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    font-size: large;
+    color: #f3f3f3;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    text-align: center;
+}
+
+
+
+/* POPUP CONTROLS SETTINGS */
+
+/* The popup screen - hidden by default */
+.nestorPopup {
+    display: none;
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    justify-content: center;
+}
+
+
+/* The popup screen main container */
+.popupContainer {
+    overflow: hidden;
+    height: 100%;
+    min-width: 320px;
+    width: 70%;
+    margin: auto;
+    background-color: #fafafa;
+}
+
+/* The popup screen central control container */
+.popupCentralContainer {
+    overflow: hidden;
+    height: 90%;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+/* The popup screen bottom button container */
+.popupButtonContainer {
+    display: flex;
+    overflow: hidden;
+    padding: 10px;
+    width: 100%;
+    flex-direction: row;
+    justify-content: right;
+}
+
+
+
+/* The popup screen - hidden by default */
+.popupText {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+/* The popup container */
+.popupTextContainer {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 80%;
+}
+
+/* Popup header */
+.popupTextHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.popupTextHeader h2 {
+    margin: 0;
+}
+
+.popupTextHeader .close {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+/* Popup body */
+.popupTextBody {
+    margin-bottom: 20px;
+}
+
+/* Textarea */
+.textareaPopup {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+/* Popup footer */
+.popupTextFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.popupTextFooter button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* END OF PAGE LOADING SETTINGS */
+
+/* Clear floats after the columns */
+.row::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+
+
+/* RESPONSIVE LAYOUT */
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+
+    .column.left {
+        height: 40%;
+        width: 100%;
+    }
+
+    .column.middle {
+        height: 20%;
+        width: 100%;
+        overflow: auto;
+    }
+
+    .column.right {
+        height: 40%;
+        width: 100%;
+    }
+
+    .actionButtonsVertically {
+        flex-direction: row;
+    }
+
+}

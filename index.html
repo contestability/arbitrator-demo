@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.5.6/jsoneditor.min.css" rel="stylesheet" type="text/css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.3/codemirror.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+        <link href="arb-index.css" media="screen" rel="stylesheet" type="text/css"/>
+        <title>
+            Automated Arbitrator Prototype for Contesting Dialogues
+        </title>
+    </head>
+
+
+    <body onload="loadPage(true)">
+
+
+        <div id="nestorOverlay">
+            <div id="loader"></div>
+            <div id="textOverlay">Establishing connection to Prudens Web Service...</div>
+        </div>
+
+
+        <div style="display:none;" id="nestorPageContent" class="animate-bottom">
+
+            <div class="header">
+                <div id="headerTextNESTOR" class="headerText">Automated Arbitrator Prototype for Contesting Dialogues</div>
+            </div>
+
+
+            <div class="topnav">
+                <a class="active" href="index.html">Home</a>
+                <a href="docs.html">About</a>
+            </div>
+
+
+            <div class="row">
+                <div class="column left">
+                    <div class="onTopHorizontalContainer">
+                        <div  id="nlArgumentsLabel" for="nlArguments" class="textarea-label">
+                            Natural Language Dialogue
+                        </div>
+                        <div class="actionButtonsHorizontallyEnd">
+                            <i class="actionCommandIcon fa fa-solid fa-close transparent"></i> <!-- Placeholder -->
+                        </div>
+                    </div>
+                    <textarea id="nlArguments" class="textarea" readonly></textarea>
+                    <div class="onTopHorizontalContainer">
+                        <div  id="inferredNLConclusionsLabel" for="inferredNLConclusions" class="textarea-label">
+                            Natural Language Conclusions
+                        </div>
+                        <div class="actionButtonsHorizontallyEnd">
+                            <i class="actionCommandIcon fa fa-solid fa-close transparent"></i> <!-- Placeholder -->
+                        </div>
+                    </div>
+                    <textarea id="inferredNLConclusions" class="textarea" readonly></textarea>
+                </div>
+ 
+                
+                <div class="column middle">
+                    <div class="flexCenteredContainer">
+                        <div class="actionButtonsHorizontallyCenter">
+                            <i class="actionCommandIcon fa fa-brands fa-github tooltip" onclick="window.open('https://github.com/orgs/contestability/repositories')">
+                                <span class="tooltiptext">Contestability GitHub Repositories</span>
+                            </i>
+                        </div>
+                    </div>
+                    <div class="flexCenteredContainer">
+                        <div class="actionButtonsVertically">
+                            <center>
+                                <div class="actionCommandIcon" id="nextButton" onclick="getNextArgument()" style="font-size: 20px">
+                                    Next Argument
+                                </div>
+                                <div class="actionCommandIcon" id="writeNextButton" onclick="writeAnArgument()" style="font-size: 20px" disabled>
+                                    Write Next Argument
+                                </div>
+                                <div class="actionCommandIcon" id="resetButton" onclick="loadPage(false)" style="font-size: 20px">
+                                    Reset Dialogue
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="column right">
+                    <div class="onTopHorizontalContainer">
+                        <div  id="prudensFormalDialogueLabel" for="prudensFormalDialogue" class="textarea-label">
+                            Prudens Formal Dialogue
+                        </div>
+                        <div class="actionButtonsHorizontallyEnd">
+                            <i class="actionCommandIcon fa fa-solid fa-close transparent"></i>
+                        </div>
+                    </div>
+                    <textarea id="prudensFormalDialogue" class="textarea"></textarea>
+                    <div class="onTopHorizontalContainer">
+                        <div  id="inferredFormalConclusionsLabel" for="inferredFormalConclusions" class="textarea-label">
+                            Prudens Formal Conclusions
+                        </div>
+                        <div class="actionButtonsHorizontallyEnd">
+                            <i id="btnViewSystemOutput" class="actionCommandIcon fa fa-solid fa-eye tooltip transparent" onclick="openPopup('systemOutputPopup', viewSystemOutput)">
+                                <span class="tooltiptext">View System Output</span>
+                            </i>
+                        </div>
+                    </div>
+                    <textarea id="inferredFormalConclusions" class="textarea"></textarea>
+                </div>
+            </div>
+
+            
+            <div class="footer">
+                <div id="consoleNESTOR" class="footerText"></div>
+            </div>
+
+
+
+            <!-- POPUP CONTROLS. NOT VISIBLE UNTIL CALLED -->
+
+            <div class="popupText" id="argumentInputPopup" style="display: none;">
+                <div class="popupTextContainer">
+                    <div class="popupTextHeader">
+                        <div  id="popupTextControlLabel" for="popupTextControl" class="textarea-label">
+                            Write Next Argument
+                        </div>
+                        <span class="close" onclick="handleCancel()">&times;</span>
+                    </div>
+                    <div class="popupTextBody">
+                        <textarea id="popupTextControl" class="textareaPopup textarea" placeholder="Enter text here..."></textarea>
+                        <textarea id="popupPassKey" class="textareaPopup textarea" placeholder="Enter passkey. Contact author..."></textarea>
+                    </div>
+                    <div class="popupTextFooter">
+                        <button class="nestorButton" onclick="handleSubmit()">Submit</button>
+                        <button class="nestorButton" onclick="handleCancel()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="nestorPopup" id="systemOutputPopup">
+                <div class="popupContainer">
+                    <div class="onTopHorizontalContainer">
+                        <div id="systemOutputLabel" for="systemOutput" class="textarea-label">
+                            System Output
+                        </div>
+                        <div class="actionButtonsHorizontallyEnd">
+                            <i class="close fa fa-solid fa-close" onclick="closePopup('systemOutputPopup')"></i>
+                        </div>
+                    </div>
+                    <div class="popupCentralContainer">
+                        <div id="systemOutput" class="textarea"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jsoneditor/9.5.6/jsoneditor.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.3/codemirror.min.js"></script>
+        <script type="text/javascript" src="arb-codemirror.js"></script>
+        <script type="text/javascript" src="arb-jsoneditor.js"></script>
+        <script type="text/javascript" src="arb-webcalls.js"></script>
+        <script type="text/javascript" src="arb-ui.js"></script>
+        <script type="text/javascript" src="arb-utils.js"></script>
+
+    </body>
+
+</html>
