@@ -1,0 +1,163 @@
+NL: Why is my loan application rejected?
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+
+NL: Your loan application has been rejected because your care-giving obligations are considered high and your credit score is low.
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+
+NL: My loan application should not have been rejected because I am a good existing customer: I own an account for a long time and I make frequent transactions.
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+
+NL: You are not qualified as a good existing customer because your account balance is low for more than one year.
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+A03 :: good_existing_customer implies -reject_loan_application | 13;
+P01 :: perceive implies account_owner_for_long | 21;
+P02 :: perceive implies transaction_frequency(high) | 22;
+A02 :: account_owner_for_long, transaction_frequency(high) implies good_existing_customer | 12;
+
+NL: Why is my credit score low?
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+A03 :: good_existing_customer implies -reject_loan_application | 13;
+P01 :: perceive implies account_owner_for_long | 21;
+P02 :: perceive implies transaction_frequency(high) | 22;
+A02 :: account_owner_for_long, transaction_frequency(high) implies good_existing_customer | 12;
+P03 :: perceive implies account_balance_low_for(1, year) | 23;
+A04 :: account_balance_low_for(1, year) implies -good_existing_customer | 24;
+
+NL: Your credit score is considered low because it is 582.
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+A03 :: good_existing_customer implies -reject_loan_application | 13;
+P01 :: perceive implies account_owner_for_long | 21;
+P02 :: perceive implies transaction_frequency(high) | 22;
+A02 :: account_owner_for_long, transaction_frequency(high) implies good_existing_customer | 12;
+P03 :: perceive implies account_balance_low_for(1, year) | 23;
+A04 :: account_balance_low_for(1, year) implies -good_existing_customer | 24;
+S06 :: suppose implies -credit_score(low) | 00;
+
+NL: My credit score is 590.
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+A03 :: good_existing_customer implies -reject_loan_application | 13;
+P01 :: perceive implies account_owner_for_long | 21;
+P02 :: perceive implies transaction_frequency(high) | 22;
+A02 :: account_owner_for_long, transaction_frequency(high) implies good_existing_customer | 12;
+P03 :: perceive implies account_balance_low_for(1, year) | 23;
+A04 :: account_balance_low_for(1, year) implies -good_existing_customer | 24;
+S06 :: suppose implies -credit_score(low) | 00;
+C01 :: credit_score_value(582) # credit_score_value(590);
+P07 :: perceive implies credit_score_value(582) | 27;
+A05 :: credit_score_value(582) implies credit_score(low) | 15;
+
+NL: Your credit score is considered low because it is below 600
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+A03 :: good_existing_customer implies -reject_loan_application | 13;
+P01 :: perceive implies account_owner_for_long | 21;
+P02 :: perceive implies transaction_frequency(high) | 22;
+A02 :: account_owner_for_long, transaction_frequency(high) implies good_existing_customer | 12;
+P03 :: perceive implies account_balance_low_for(1, year) | 23;
+A04 :: account_balance_low_for(1, year) implies -good_existing_customer | 24;
+S06 :: suppose implies -credit_score(low) | 00;
+C01 :: credit_score_value(582) # credit_score_value(590);
+P07 :: perceive implies credit_score_value(582) | 27;
+A05 :: credit_score_value(582) implies credit_score(low) | 15;
+P08 :: perceive implies credit_score_value(590) | 28;
+
+NL: Why are my care-giving obligations considered high?
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+A03 :: good_existing_customer implies -reject_loan_application | 13;
+P01 :: perceive implies account_owner_for_long | 21;
+P02 :: perceive implies transaction_frequency(high) | 22;
+A02 :: account_owner_for_long, transaction_frequency(high) implies good_existing_customer | 12;
+P03 :: perceive implies account_balance_low_for(1, year) | 23;
+A04 :: account_balance_low_for(1, year) implies -good_existing_customer | 24;
+S06 :: suppose implies -credit_score(low) | 00;
+C01 :: credit_score_value(582) # credit_score_value(590);
+P07 :: perceive implies credit_score_value(582) | 27;
+A05 :: credit_score_value(582) implies credit_score(low) | 15;
+P08 :: perceive implies credit_score_value(590) | 28;
+A06 :: credit_score_value(590) implies credit_score_less_than(600) | 16;
+A07 :: credit_score_less_than(600) implies credit_score(low) | 17;
+
+NL: Your care-giving obligations are considered high because you are female and have two children.
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+A03 :: good_existing_customer implies -reject_loan_application | 13;
+P01 :: perceive implies account_owner_for_long | 21;
+P02 :: perceive implies transaction_frequency(high) | 22;
+A02 :: account_owner_for_long, transaction_frequency(high) implies good_existing_customer | 12;
+P03 :: perceive implies account_balance_low_for(1, year) | 23;
+A04 :: account_balance_low_for(1, year) implies -good_existing_customer | 24;
+S06 :: suppose implies -credit_score(low) | 00;
+C01 :: credit_score_value(582) # credit_score_value(590);
+P07 :: perceive implies credit_score_value(582) | 27;
+A05 :: credit_score_value(582) implies credit_score(low) | 15;
+P08 :: perceive implies credit_score_value(590) | 28;
+A06 :: credit_score_value(590) implies credit_score_less_than(600) | 16;
+A07 :: credit_score_less_than(600) implies credit_score(low) | 17;
+S04 :: suppose implies -caregiving_obligations(high) | 00;
+
+NL: Gender should not be used to determine care-giving obligations.
+CP: @Knowledge
+S01 :: suppose implies reject_loan_application | 00;
+S02 :: suppose implies -reject_loan_application | 00;
+S03 :: suppose implies caregiving_obligations(high) | 00;
+S05 :: suppose implies credit_score(low) | 00;
+A01 :: caregiving_obligations(high), credit_score(low) implies reject_loan_application | 11;
+A03 :: good_existing_customer implies -reject_loan_application | 13;
+P01 :: perceive implies account_owner_for_long | 21;
+P02 :: perceive implies transaction_frequency(high) | 22;
+A02 :: account_owner_for_long, transaction_frequency(high) implies good_existing_customer | 12;
+P03 :: perceive implies account_balance_low_for(1, year) | 23;
+A04 :: account_balance_low_for(1, year) implies -good_existing_customer | 24;
+S06 :: suppose implies -credit_score(low) | 00;
+C01 :: credit_score_value(582) # credit_score_value(590);
+P07 :: perceive implies credit_score_value(582) | 27;
+A05 :: credit_score_value(582) implies credit_score(low) | 15;
+P08 :: perceive implies credit_score_value(590) | 28;
+A06 :: credit_score_value(590) implies credit_score_less_than(600) | 16;
+A07 :: credit_score_less_than(600) implies credit_score(low) | 17;
+S04 :: suppose implies -caregiving_obligations(high) | 00;
+P04 :: perceive implies gender(female) | 24;
+P05 :: perceive implies have(child, 2) | 25;
+A08 :: gender(female) implies female_obligations | 18;
+A09 :: have(child, 2), female_obligations implies caregiving_obligations(high) | 19;
