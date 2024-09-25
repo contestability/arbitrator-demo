@@ -1,6 +1,7 @@
 let globalcurrentArgument = 0;
 let globalCurrentNLDialogue = '';
 let globalCurrentPrudensDialogue = '@KnowledgeBase\n';
+let globalCurrentInterlocutor = "";
 
 let globalCurrentArgumentText = "";
 
@@ -82,6 +83,7 @@ async function loadPage(showOverlay) {
 	globalcurrentArgument = 0;
 	globalCurrentNLDialogue = '';
 	globalCurrentPrudensDialogue = '@KnowledgeBase\n';
+
 	let lResponseJSON = '{ "context": [], "inferences" : [], "facts" : [], "graph" : {}, "dilemmas" : [], "defeatedRules" : [], logs : [] }';
 
 	if (showOverlay) {
@@ -124,7 +126,7 @@ function showPage(showOverlay) {
 
 	nlConclusionsTextArea.setValue("");
 	document.getElementById("nextButton").textContent = "Start Dialogue";
-	document.getElementById("writeNextButton").disabled = true;
+	//document.getElementById("writeNextButton").disabled = true;
 	document.getElementById("nestorPageContent").style.display = "block";
 
 	if (showOverlay) {
@@ -144,6 +146,7 @@ function showPage(showOverlay) {
 	formalConclusionsTextArea.setValue("");
 	document.getElementById("consoleNESTOR").textContent = "";
 
+	getNextArgument();
 }
 
 
@@ -176,7 +179,8 @@ async function getNextArgument() {
 	try {
 		if (globalcurrentArgument < constContestDialogue.length) {
 
-			let nlArgument = `${constContestDialogue[globalcurrentArgument][2]}: ${constContestDialogue[globalcurrentArgument][0]} (${constContestDialogue[globalcurrentArgument][3]})`;
+			globalCurrentInterlocutor = constContestDialogue[globalcurrentArgument][2];
+			let nlArgument = `${globalCurrentInterlocutor}: ${constContestDialogue[globalcurrentArgument][0]} (${constContestDialogue[globalcurrentArgument][3]})`;
 			let nlDialogue = (globalCurrentNLDialogue == '') ? nlArgument : globalCurrentNLDialogue + '\n\n' + nlArgument;
 			let prudensDialogue = globalCurrentPrudensDialogue + '\n\n' + constContestDialogue[globalcurrentArgument][1];;
 
@@ -231,8 +235,8 @@ async function writeNextArgument() {
 
 			if (prudensIndex >=0 && prudensIndex < constContestDialogue.length) {
 
-				let nlArgument = ((globalcurrentArgument % 2 == 0) ? "Bank Officer: " : "Loan Applicant: ") +
-									globalCurrentArgumentText +
+				globalCurrentInterlocutor = (globalcurrentArgument % 2 == 0) ? "Bank Officer" : "Loan Applicant";
+				let nlArgument = globalCurrentInterlocutor + ": " + globalCurrentArgumentText +
 									` (Nw${(globalcurrentArgument+1).toString().padStart(2, '0')})`;
 				let nlDialogue = (globalCurrentNLDialogue == '') ? nlArgument : globalCurrentNLDialogue + '\n\n' + nlArgument;
 
@@ -282,9 +286,9 @@ async function writeAnArgument() {
 
 		openPopupFlex('argumentInputPopup', null);
 
-		const {text, passkey} = await waitForUserInput();
+		const {interlocutor, text, passkey} = await waitForUserInput();
 		globalCurrentArgumentText = text;
-		console.log('User input:', globalCurrentArgumentText);
+		console.log(`${interlocutor}: ${globalCurrentArgumentText}`);
 		
 		let prudensIndexes = "";
 		prudensIndexes = await makeApiCallToChatGPT(constSystemPromptToSelectPrudensArguments, "NL: " + globalCurrentArgumentText, passkey);
@@ -308,6 +312,7 @@ async function writeAnArgument() {
 
 				let currentArgumentPrudensRepresentation = "";
 				let initialCurrentArgumentPrudensRepresentation = "";
+				let rulesAlreadyInPolicy = 0;
 
 				for (var i = 0; i < prudensIndexes.length; i++) {
 
@@ -331,6 +336,7 @@ async function writeAnArgument() {
 					else if (ruleIsIncludedInPolicy(globalCurrentPrudensDialogue, constArgumentSet[value][2], true, false)) {
 						// This rule is already included in Prudens Dialogue. Log and continue to next rule
 						console.log(`Rule ${constArgumentSet[value][2]} is already included in Prudens Dialogue`);
+						rulesAlreadyInPolicy++;
 						continue;
 					}
 
@@ -372,35 +378,63 @@ async function writeAnArgument() {
 				// We have a translation. Let's see if we can do something with it...
 
 				// Proceed to update the Natural Language Dialogue text
-				let nlArgument = ((globalcurrentArgument % 2 == 0) ? "Bank Officer: " : "Loan Applicant: ") +
-				globalCurrentArgumentText +
+				if (interlocutor === "Auto") {
+
+					if (globalCurrentInterlocutor === "Loan Applicant")
+						globalCurrentInterlocutor = "Bank Officer";
+					else
+						globalCurrentInterlocutor = "Loan Applicant";
+
+				}
+				else
+					globalCurrentInterlocutor = interlocutor;
+
+				let nlArgument = globalCurrentInterlocutor +	": " + globalCurrentArgumentText +
 				` (Nw${(globalcurrentArgument+1).toString().padStart(2, '0')})`;
 				let nlDialogue = (globalCurrentNLDialogue == '') ? nlArgument : globalCurrentNLDialogue + '\n\n' + nlArgument;
 
-				// Proceed to update the Prudens DIalogue text
-				let prudensDialogue = globalCurrentPrudensDialogue + '\n\n' + currentArgumentPrudensRepresentation;
 
-				// Set Natural Language Dialogue textbox with updated text
-				nlArgumentsTextArea.setValue(nlDialogue);
+				// If we managed to get a Prudens representation for this argument, go ahead to update Prudens Dialogue
+				if (currentArgumentPrudensRepresentation !== "") {
 
-				// Scroll to the end of the Natural Language Dialogue textbox
-				var lastLineNL = nlArgumentsTextArea.lastLine();
-				nlArgumentsTextArea.scrollTo(null, nlArgumentsTextArea.charCoords({line: lastLineNL, ch: 0}, "local").bottom);
+					// Proceed to update the Prudens DIalogue text
+					let prudensDialogue = globalCurrentPrudensDialogue + '\n\n' + currentArgumentPrudensRepresentation;
 
-				// Set Prudens Dialogue textbox with updated text
-				prudensFormalDialogueTextarea.setValue(prudensDialogue);
+					// Set Natural Language Dialogue textbox with updated text
+					nlArgumentsTextArea.setValue(nlDialogue);
 
-				// Scroll to the end of the Prudens Dialogue textbox
-				var lastLine = prudensFormalDialogueTextarea.lastLine();
-				prudensFormalDialogueTextarea.scrollTo(null, prudensFormalDialogueTextarea.charCoords({line: lastLine, ch: 0}, "local").bottom);
+					// Scroll to the end of the Natural Language Dialogue textbox
+					var lastLineNL = nlArgumentsTextArea.lastLine();
+					nlArgumentsTextArea.scrollTo(null, nlArgumentsTextArea.charCoords({line: lastLineNL, ch: 0}, "local").bottom);
 
-				// Set global variables accordingly
-				globalCurrentNLDialogue = nlDialogue;
-				globalCurrentPrudensDialogue = prudensDialogue;
-				globalcurrentArgument++;
+					// Set Prudens Dialogue textbox with updated text
+					prudensFormalDialogueTextarea.setValue(prudensDialogue);
 
-				// Infer Conclusion by calling Prudens Reasoning Engine
-				inferConclusion();
+					// Scroll to the end of the Prudens Dialogue textbox
+					var lastLine = prudensFormalDialogueTextarea.lastLine();
+					prudensFormalDialogueTextarea.scrollTo(null, prudensFormalDialogueTextarea.charCoords({line: lastLine, ch: 0}, "local").bottom);
+
+					// Set global variables accordingly
+					globalCurrentNLDialogue = nlDialogue;
+					globalCurrentPrudensDialogue = prudensDialogue;
+					globalcurrentArgument++;
+
+					// Infer Conclusion by calling Prudens Reasoning Engine
+					inferConclusion();
+
+				}
+
+				// Else if all rules returned are already in Prudens DIalogue (policy), just log the error
+				else if (rulesAlreadyInPolicy == prudensIndexes.length) {
+					console.log(`All rules returned (${rulesAlreadyInPolicy}) are already in Prudens DIalogue (policy)`);
+				}
+
+				// Else if no Prudens representation can be created for this argument, log it and report it
+				else {
+					// Handle empty Prudens representation
+					alert("Prudens representation for this argument could not be created.");
+					throw new Error("Prudens representation for this argument could not be created.");
+				}
 
 			}
 			
@@ -531,6 +565,7 @@ function openPopup(popupElement, actionNESTOR = null) {
 function openPopupFlex(popupElement, actionNESTOR = null) {
 	if (actionNESTOR)
 		actionNESTOR();
+	setInterlocutorDefault();
     document.getElementById(popupElement).style.display = "flex";
 }
 
@@ -553,14 +588,16 @@ function waitForUserInput() {
         window.handleSubmit = function() {
             text = document.getElementById('popupTextControl').value;
 			passkey = document.getElementById('popupPassKey').value;
+			interlocutor = document.getElementById('interlocutor').value;
 			document.getElementById('popupTextControl').value = "";
             closePopup("argumentInputPopup");
-            resolve({text, passkey});
+            resolve({interlocutor, text, passkey});
         };
 
         // Handle the cancel button to reject the promise
         window.handleCancel = function() {
 			document.getElementById('popupTextControl').value = "";
+			document.getElementById('interlocutor').value = "Auto";
             closePopup("argumentInputPopup");
             reject(new Error('User canceled the input'));
         };
@@ -568,6 +605,18 @@ function waitForUserInput() {
 }
 
 
+function setInterlocutorDefault() {
+
+	if (globalCurrentInterlocutor === "Loan Applicant")
+		document.getElementById('interlocutor').value = "Bank Officer";
+
+	else if (globalCurrentInterlocutor === "Bank Officer")
+		document.getElementById('interlocutor').value = "Loan Applicant";
+
+	else
+	document.getElementById('interlocutor').value = "Auto";
+
+}
 
 
 

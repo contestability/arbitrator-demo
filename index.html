@@ -9,7 +9,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
         <link href="arb-index.css" media="screen" rel="stylesheet" type="text/css"/>
         <title>
-            Automated Arbitrator Prototype for Contesting Dialogues
+            Automated Arbitrator Demo for Contesting Dialogues
         </title>
     </head>
 
@@ -26,7 +26,7 @@
         <div style="display:none;" id="nestorPageContent" class="animate-bottom">
 
             <div class="header">
-                <div id="headerTextNESTOR" class="headerText">Automated Arbitrator Prototype for Contesting Dialogues</div>
+                <div id="headerTextNESTOR" class="headerText">Automated Arbitrator Demo for Contesting Dialogues</div>
             </div>
 
 
@@ -70,10 +70,10 @@
                     <div class="flexCenteredContainer">
                         <div class="actionButtonsVertically">
                             <center>
-                                <div class="actionCommandIcon" id="nextButton" onclick="getNextArgument()" style="font-size: 20px">
+                                <div class="actionCommandIcon" id="nextButton" onclick="getNextArgument()" style="font-size: 20px; display: none;">
                                     Next Argument
                                 </div>
-                                <div class="actionCommandIcon" id="writeNextButton" onclick="writeAnArgument()" style="font-size: 20px" disabled>
+                                <div class="actionCommandIcon" id="writeNextButton" onclick="writeAnArgument()" style="font-size: 20px">
                                     Write Next Argument
                                 </div>
                                 <div class="actionCommandIcon" id="resetButton" onclick="loadPage(false)" style="font-size: 20px">
@@ -122,8 +122,13 @@
                 <div class="popupTextContainer">
                     <div class="popupTextHeader">
                         <div  id="popupTextControlLabel" for="popupTextControl" class="textarea-label">
-                            Write Next Argument
+                            Write argument for 
                         </div>
+                        <select id="interlocutor" class="textarea">
+                            <option value="Auto" selected="selected">Auto</option>
+                            <option value="Loan Applicant">Loan Applicant</option>
+                            <option value="Bank Officer">Bank Officer</option>
+                        </select>
                         <span class="close" onclick="handleCancel()">&times;</span>
                     </div>
                     <div class="popupTextBody">
