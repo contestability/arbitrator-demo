@@ -101,7 +101,7 @@ const makeApiCallToChatGPT = async (systemPrompt, argumentText, passKey, retries
 
 		// Define the message payload
 		const payload = {
-			model: "gpt-4o-mini",  // or the appropriate model you are using
+			model: "gpt-4o",  // or the appropriate model you are using
 			messages: [
 				{ "role": "system", "content": systemPrompt},
 				{ "role": "user", "content": argumentText}
